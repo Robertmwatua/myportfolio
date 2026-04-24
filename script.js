@@ -3,9 +3,8 @@ const navToggle = document.querySelector(".nav-toggle");
 const siteNav = document.querySelector("nav");
 const backToTopButton = document.querySelector(".back-to-top");
 const profileTrigger = document.querySelector(".profile-trigger");
-const profileLightbox = document.querySelector("#profile-lightbox");
-const lightboxClose = document.querySelector(".lightbox-close");
-const lightboxBackdrop = document.querySelector(".lightbox-backdrop");
+const profilePreview = document.querySelector("#profile-preview");
+const profilePreviewClose = document.querySelector(".profile-preview-close");
 
 // Smooth scroll for internal links.
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -265,7 +264,7 @@ if (carouselTrack && carouselViewport && carouselSlides.length) {
             window.clearInterval(certificateAutoplay);
             certificateAutoplay = window.setInterval(() => {
                 const nextIndex = (currentSlide + 1) % carouselSlides.length;
-                updateCarousel(nextIndex, "smooth", true);
+                updateCarousel(nextIndex, "smooth", false);
             }, 4200);
         };
 
@@ -282,35 +281,54 @@ if (carouselTrack && carouselViewport && carouselSlides.length) {
     }
 }
 
-// Profile image lightbox.
-const openLightbox = () => {
-    if (!profileLightbox) {
+// Profile image preview.
+const openProfilePreview = () => {
+    if (!profilePreview) {
         return;
     }
 
-    profileLightbox.classList.add("is-open");
-    profileLightbox.setAttribute("aria-hidden", "false");
-    document.body.classList.add("modal-open");
+    profilePreview.classList.add("is-open");
+    profilePreview.setAttribute("aria-hidden", "false");
 };
 
-const closeLightbox = () => {
-    if (!profileLightbox) {
+const closeProfilePreview = () => {
+    if (!profilePreview) {
         return;
     }
 
-    profileLightbox.classList.remove("is-open");
-    profileLightbox.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("modal-open");
+    profilePreview.classList.remove("is-open");
+    profilePreview.setAttribute("aria-hidden", "true");
 };
 
-profileTrigger?.addEventListener("click", openLightbox);
-lightboxClose?.addEventListener("click", closeLightbox);
-lightboxBackdrop?.addEventListener("click", closeLightbox);
+profileTrigger?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const isOpen = profilePreview?.classList.contains("is-open");
+    if (isOpen) {
+        closeProfilePreview();
+        return;
+    }
+
+    openProfilePreview();
+});
+
+profilePreviewClose?.addEventListener("click", closeProfilePreview);
 
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-        closeLightbox();
+        closeProfilePreview();
     }
+});
+
+document.addEventListener("click", (event) => {
+    if (!profilePreview?.classList.contains("is-open")) {
+        return;
+    }
+
+    if (profilePreview.contains(event.target) || profileTrigger?.contains(event.target)) {
+        return;
+    }
+
+    closeProfilePreview();
 });
 
 // Auto-slide hobbies on mobile to keep the section feeling lighter.
@@ -319,6 +337,7 @@ const hobbyCards = document.querySelectorAll(".hobby-card");
 
 if (hobbyGrid && hobbyCards.length > 1 && !prefersReducedMotion) {
     let hobbyIndex = 0;
+    let hobbyAutoplay;
 
     const autoSlideHobbies = () => {
         if (window.innerWidth > 720) {
@@ -335,5 +354,12 @@ if (hobbyGrid && hobbyCards.length > 1 && !prefersReducedMotion) {
         });
     };
 
-    setInterval(autoSlideHobbies, 3600);
+    const startHobbyAutoplay = () => {
+        window.clearInterval(hobbyAutoplay);
+        hobbyAutoplay = window.setInterval(autoSlideHobbies, 3600);
+    };
+
+    startHobbyAutoplay();
+    hobbyGrid.addEventListener("pointerenter", () => window.clearInterval(hobbyAutoplay));
+    hobbyGrid.addEventListener("pointerleave", startHobbyAutoplay);
 }
