@@ -2,6 +2,10 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 const navToggle = document.querySelector(".nav-toggle");
 const siteNav = document.querySelector("nav");
 const backToTopButton = document.querySelector(".back-to-top");
+const profileTrigger = document.querySelector(".profile-trigger");
+const profileLightbox = document.querySelector("#profile-lightbox");
+const lightboxClose = document.querySelector(".lightbox-close");
+const lightboxBackdrop = document.querySelector(".lightbox-backdrop");
 
 // Smooth scroll for internal links.
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -40,6 +44,31 @@ sections.forEach((section) => {
     section.classList.add("hidden");
     revealObserver.observe(section);
 });
+
+// Stagger key cards into view for a more progressive read.
+const revealCards = document.querySelectorAll(
+    ".stat-card, .journey-step, .highlight-card, .skill-card, .service-card, .project-card, .certificate-card, .hobby-card, .social-link"
+);
+
+revealCards.forEach((card, index) => {
+    card.classList.add("reveal-card");
+    card.style.setProperty("--reveal-delay", `${(index % 6) * 70}ms`);
+});
+
+const revealCardObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+            return;
+        }
+
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+    });
+}, {
+    threshold: 0.18
+});
+
+revealCards.forEach((card) => revealCardObserver.observe(card));
 
 // Keep the nav synced with the visible section.
 const navLinks = document.querySelectorAll('nav a[href^="#"]');
@@ -164,6 +193,7 @@ const nextButton = document.querySelector(".carousel-button-next");
 
 if (carouselTrack && carouselViewport && carouselSlides.length) {
     let currentSlide = 0;
+    let certificateAutoplay;
 
     const syncDots = (index) => {
         carouselDots.forEach((dot, dotIndex) => {
@@ -229,4 +259,81 @@ if (carouselTrack && carouselViewport && carouselSlides.length) {
     } else {
         carouselViewport.scrollLeft = 0;
     }
+
+    if (!prefersReducedMotion) {
+        const startAutoplay = () => {
+            window.clearInterval(certificateAutoplay);
+            certificateAutoplay = window.setInterval(() => {
+                const nextIndex = (currentSlide + 1) % carouselSlides.length;
+                updateCarousel(nextIndex, "smooth", true);
+            }, 4200);
+        };
+
+        const stopAutoplay = () => {
+            window.clearInterval(certificateAutoplay);
+        };
+
+        startAutoplay();
+        carouselViewport.addEventListener("pointerenter", stopAutoplay);
+        carouselViewport.addEventListener("pointerleave", startAutoplay);
+        prevButton?.addEventListener("click", startAutoplay);
+        nextButton?.addEventListener("click", startAutoplay);
+        carouselDots.forEach((dot) => dot.addEventListener("click", startAutoplay));
+    }
+}
+
+// Profile image lightbox.
+const openLightbox = () => {
+    if (!profileLightbox) {
+        return;
+    }
+
+    profileLightbox.classList.add("is-open");
+    profileLightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+};
+
+const closeLightbox = () => {
+    if (!profileLightbox) {
+        return;
+    }
+
+    profileLightbox.classList.remove("is-open");
+    profileLightbox.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+};
+
+profileTrigger?.addEventListener("click", openLightbox);
+lightboxClose?.addEventListener("click", closeLightbox);
+lightboxBackdrop?.addEventListener("click", closeLightbox);
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        closeLightbox();
+    }
+});
+
+// Auto-slide hobbies on mobile to keep the section feeling lighter.
+const hobbyGrid = document.querySelector(".hobby-grid");
+const hobbyCards = document.querySelectorAll(".hobby-card");
+
+if (hobbyGrid && hobbyCards.length > 1 && !prefersReducedMotion) {
+    let hobbyIndex = 0;
+
+    const autoSlideHobbies = () => {
+        if (window.innerWidth > 720) {
+            return;
+        }
+
+        hobbyIndex = (hobbyIndex + 1) % hobbyCards.length;
+        const cardWidth = hobbyCards[0].getBoundingClientRect().width;
+        const gap = 16;
+
+        hobbyGrid.scrollTo({
+            left: hobbyIndex * (cardWidth + gap),
+            behavior: "smooth"
+        });
+    };
+
+    setInterval(autoSlideHobbies, 3600);
 }

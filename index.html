@@ -40,9 +40,9 @@
             <div class="container hero-inner">
                 <div class="hero-copy">
                     <div class="hero-profile">
-                        <div class="profile-ring">
+                        <button class="profile-ring profile-trigger" type="button" aria-label="Open profile photo">
                             <img src="images/dp.png" alt="Portrait of Robert Mwatua">
-                        </div>
+                        </button>
                     </div>
                     <p class="eyebrow">Cybersecurity ● Software Engineering ● Networking</p>
                     <div class="status-pill">Open to collaborations and security-focused builds</div>
@@ -55,8 +55,25 @@
                     </div>
                     <div class="hero-buttons">
                         <a class="button primary" href="#projects">Explore Projects</a>
-                        <a class="button tertiary" href="https://github.com/Robertmwatua" target="_blank" rel="noopener noreferrer">View GitHub</a>
+                        <a class="button tertiary icon-button" href="https://github.com/Robertmwatua" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.23c0 4.51 2.87 8.34 6.84 9.69.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.2-3.37-1.2-.46-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.5.36 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.58 5.07.36.32.68.95.68 1.92 0 1.38-.01 2.5-.01 2.84 0 .27.18.6.69.49A10.24 10.24 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"/></svg>
+                            <span>View GitHub</span>
+                        </a>
                         <a class="button secondary" href="#contact">Get in Touch</a>
+                    </div>
+                    <div class="hero-socials" aria-label="Quick social links">
+                        <a class="hero-social" href="https://github.com/Robertmwatua" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.23c0 4.51 2.87 8.34 6.84 9.69.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.2-3.37-1.2-.46-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.5.36 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.58 5.07.36.32.68.95.68 1.92 0 1.38-.01 2.5-.01 2.84 0 .27.18.6.69.49A10.24 10.24 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"/></svg>
+                        </a>
+                        <a class="hero-social" href="https://www.linkedin.com/in/robert-mwatua-709184372" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A1.97 1.97 0 0 0 3.28 5c0 1.09.88 1.98 1.96 1.98h.02A1.98 1.98 0 1 0 5.25 3ZM20.72 12.59c0-3.47-1.85-5.09-4.31-5.09-1.99 0-2.88 1.1-3.38 1.86V8.5H9.65c.04.57 0 11.5 0 11.5h3.38v-6.42c0-.34.02-.68.13-.92.27-.68.88-1.38 1.9-1.38 1.34 0 1.88 1.03 1.88 2.54V20H20.3l.42-7.41Z"/></svg>
+                        </a>
+                        <a class="hero-social" href="https://medium.com/@favourmwatua" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7.2c.03-.3-.09-.6-.31-.8L2 3.75V3.4h6.84l5.28 11.58L18.75 3.4H25v.35l-1.88 1.8c-.16.12-.24.33-.21.54V18c-.03.21.05.42.21.54l1.84 1.8v.35h-9.24v-.35l1.9-1.84c.19-.19.19-.24.19-.54V8.31l-5.28 13.34h-.71L5.67 8.31V16.8c-.05.39.08.78.36 1.06l2.46 2.98v.35H1.5v-.35l2.46-2.98c.27-.28.39-.68.33-1.06V7.2Z" transform="translate(-1 -0.3) scale(0.96)"/></svg>
+                        </a>
+                        <a class="hero-social" href="https://wa.me/254791578731" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.05 4.94A9.77 9.77 0 0 0 12.09 2C6.67 2 2.25 6.41 2.25 11.84c0 1.74.46 3.43 1.32 4.92L2 22l5.39-1.42a9.8 9.8 0 0 0 4.7 1.2h.01c5.42 0 9.84-4.41 9.84-9.84a9.73 9.73 0 0 0-2.89-7Zm-6.96 15.18h-.01a8.2 8.2 0 0 1-4.17-1.14l-.3-.18-3.2.84.86-3.12-.19-.32a8.13 8.13 0 0 1-1.25-4.35c0-4.48 3.65-8.13 8.14-8.13a8.08 8.08 0 0 1 5.76 2.39 8.05 8.05 0 0 1 2.37 5.75c0 4.48-3.65 8.13-8.13 8.13Zm4.46-6.08c-.24-.12-1.41-.7-1.63-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.03-.38-1.95-1.22-.72-.64-1.21-1.43-1.35-1.67-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.48-.4-.42-.54-.43h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 1.99 0 1.17.86 2.3.98 2.46.12.16 1.69 2.58 4.1 3.61.57.25 1.02.4 1.37.51.58.18 1.11.15 1.53.09.47-.07 1.41-.58 1.61-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"/></svg>
+                        </a>
                     </div>
                 </div>
 
@@ -446,8 +463,32 @@
         <div class="container footer-inner">
             <p>Built by Robert Mwatua, focused on security, code, and continuous learning.</p>
             <p><a href="mailto:robertmwatua1@gmail.com">robertmwatua1@gmail.com</a> • <a href="https://github.com/Robertmwatua" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+            <div class="footer-socials" aria-label="Footer social links">
+                <a class="footer-social" href="https://github.com/Robertmwatua" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.23c0 4.51 2.87 8.34 6.84 9.69.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.2-3.37-1.2-.46-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.5.36 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.58 5.07.36.32.68.95.68 1.92 0 1.38-.01 2.5-.01 2.84 0 .27.18.6.69.49A10.24 10.24 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"/></svg>
+                </a>
+                <a class="footer-social" href="https://www.linkedin.com/in/robert-mwatua-709184372" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A1.97 1.97 0 0 0 3.28 5c0 1.09.88 1.98 1.96 1.98h.02A1.98 1.98 0 1 0 5.25 3ZM20.72 12.59c0-3.47-1.85-5.09-4.31-5.09-1.99 0-2.88 1.1-3.38 1.86V8.5H9.65c.04.57 0 11.5 0 11.5h3.38v-6.42c0-.34.02-.68.13-.92.27-.68.88-1.38 1.9-1.38 1.34 0 1.88 1.03 1.88 2.54V20H20.3l.42-7.41Z"/></svg>
+                </a>
+                <a class="footer-social" href="https://medium.com/@favourmwatua" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7.2c.03-.3-.09-.6-.31-.8L2 3.75V3.4h6.84l5.28 11.58L18.75 3.4H25v.35l-1.88 1.8c-.16.12-.24.33-.21.54V18c-.03.21.05.42.21.54l1.84 1.8v.35h-9.24v-.35l1.9-1.84c.19-.19.19-.24.19-.54V8.31l-5.28 13.34h-.71L5.67 8.31V16.8c-.05.39.08.78.36 1.06l2.46 2.98v.35H1.5v-.35l2.46-2.98c.27-.28.39-.68.33-1.06V7.2Z" transform="translate(-1 -0.3) scale(0.96)"/></svg>
+                </a>
+                <a class="footer-social" href="https://www.instagram.com/_.script.kiddie" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7Zm10.25 1.65a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2.2A2.8 2.8 0 1 0 12 14.8 2.8 2.8 0 0 0 12 9.2Z"/></svg>
+                </a>
+            </div>
         </div>
     </footer>
+
+    <div class="lightbox" id="profile-lightbox" aria-hidden="true">
+        <button class="lightbox-backdrop" type="button" aria-label="Close profile preview"></button>
+        <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Profile photo preview">
+            <button class="lightbox-close" type="button" aria-label="Close profile preview">&times;</button>
+            <div class="lightbox-image-wrap">
+                <img src="images/dp.png" alt="Large portrait of Robert Mwatua">
+            </div>
+        </div>
+    </div>
 
     <button class="back-to-top" type="button" aria-label="Back to top">
         <span aria-hidden="true">&#8593;</span>
