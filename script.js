@@ -1,6 +1,7 @@
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const navToggle = document.querySelector(".nav-toggle");
 const siteNav = document.querySelector("nav");
+const backToTopButton = document.querySelector(".back-to-top");
 
 // Smooth scroll for internal links.
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -85,6 +86,24 @@ const updateScrollProgress = () => {
 updateScrollProgress();
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 
+const updateBackToTop = () => {
+    if (!backToTopButton) {
+        return;
+    }
+
+    backToTopButton.classList.toggle("show-button", window.scrollY > 520);
+};
+
+updateBackToTop();
+window.addEventListener("scroll", updateBackToTop, { passive: true });
+
+backToTopButton?.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion ? "auto" : "smooth"
+    });
+});
+
 // Track pointer position for a subtle ambient glow.
 if (!prefersReducedMotion) {
     window.addEventListener("pointermove", (event) => {
@@ -146,22 +165,31 @@ const nextButton = document.querySelector(".carousel-button-next");
 if (carouselTrack && carouselViewport && carouselSlides.length) {
     let currentSlide = 0;
 
-    const updateCarousel = (index, behavior = "smooth") => {
-        currentSlide = index;
-
-        if (window.innerWidth <= 720) {
-            carouselSlides[index].scrollIntoView({
-                behavior: prefersReducedMotion ? "auto" : behavior,
-                block: "nearest",
-                inline: "start"
-            });
-        } else {
-            carouselTrack.style.transform = `translateX(calc(${index * -100}% - ${index}rem))`;
-        }
-
+    const syncDots = (index) => {
         carouselDots.forEach((dot, dotIndex) => {
             dot.classList.toggle("active", dotIndex === index);
         });
+    };
+
+    const updateCarousel = (index, behavior = "smooth", preservePagePosition = false) => {
+        currentSlide = Math.max(0, Math.min(index, carouselSlides.length - 1));
+        const pageTop = window.scrollY;
+
+        if (window.innerWidth <= 720) {
+            const slideWidth = carouselViewport.clientWidth;
+            carouselViewport.scrollTo({
+                left: slideWidth * currentSlide,
+                behavior: prefersReducedMotion ? "auto" : behavior
+            });
+        } else {
+            carouselTrack.style.transform = `translateX(calc(${currentSlide * -100}% - ${currentSlide}rem))`;
+        }
+
+        syncDots(currentSlide);
+
+        if (preservePagePosition) {
+            window.scrollTo({ top: pageTop, behavior: "auto" });
+        }
     };
 
     prevButton?.addEventListener("click", () => {
@@ -189,12 +217,16 @@ if (carouselTrack && carouselViewport && carouselSlides.length) {
         }
 
         const index = Math.round(carouselViewport.scrollLeft / slideWidth);
-        carouselDots.forEach((dot, dotIndex) => {
-            dot.classList.toggle("active", dotIndex === index);
-        });
+        syncDots(index);
         currentSlide = index;
     }, { passive: true });
 
-    window.addEventListener("resize", () => updateCarousel(currentSlide, "auto"));
-    updateCarousel(0, "auto");
+    window.addEventListener("resize", () => updateCarousel(currentSlide, "auto", true));
+    syncDots(0);
+
+    if (window.innerWidth > 720) {
+        updateCarousel(0, "auto", true);
+    } else {
+        carouselViewport.scrollLeft = 0;
+    }
 }
