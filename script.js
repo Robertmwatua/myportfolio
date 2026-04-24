@@ -2,9 +2,6 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 const navToggle = document.querySelector(".nav-toggle");
 const siteNav = document.querySelector("nav");
 const backToTopButton = document.querySelector(".back-to-top");
-const profileTrigger = document.querySelector(".profile-trigger");
-const profilePreview = document.querySelector("#profile-preview");
-const profilePreviewClose = document.querySelector(".profile-preview-close");
 
 // Smooth scroll for internal links.
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -281,85 +278,50 @@ if (carouselTrack && carouselViewport && carouselSlides.length) {
     }
 }
 
-// Profile image preview.
-const openProfilePreview = () => {
-    if (!profilePreview) {
-        return;
-    }
-
-    profilePreview.classList.add("is-open");
-    profilePreview.setAttribute("aria-hidden", "false");
-};
-
-const closeProfilePreview = () => {
-    if (!profilePreview) {
-        return;
-    }
-
-    profilePreview.classList.remove("is-open");
-    profilePreview.setAttribute("aria-hidden", "true");
-};
-
-profileTrigger?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    const isOpen = profilePreview?.classList.contains("is-open");
-    if (isOpen) {
-        closeProfilePreview();
-        return;
-    }
-
-    openProfilePreview();
-});
-
-profilePreviewClose?.addEventListener("click", closeProfilePreview);
-
-document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-        closeProfilePreview();
-    }
-});
-
-document.addEventListener("click", (event) => {
-    if (!profilePreview?.classList.contains("is-open")) {
-        return;
-    }
-
-    if (profilePreview.contains(event.target) || profileTrigger?.contains(event.target)) {
-        return;
-    }
-
-    closeProfilePreview();
-});
-
 // Auto-slide hobbies on mobile to keep the section feeling lighter.
 const hobbyGrid = document.querySelector(".hobby-grid");
+const hobbyViewport = document.querySelector(".hobby-viewport");
 const hobbyCards = document.querySelectorAll(".hobby-card");
+const hobbyPrevButton = document.querySelector(".hobby-button-prev");
+const hobbyNextButton = document.querySelector(".hobby-button-next");
 
-if (hobbyGrid && hobbyCards.length > 1 && !prefersReducedMotion) {
+if (hobbyGrid && hobbyViewport && hobbyCards.length > 1) {
     let hobbyIndex = 0;
     let hobbyAutoplay;
+    const hobbyGap = 16;
 
-    const autoSlideHobbies = () => {
-        if (window.innerWidth > 720) {
-            return;
-        }
-
-        hobbyIndex = (hobbyIndex + 1) % hobbyCards.length;
+    const goToHobby = (index, behavior = "smooth") => {
+        hobbyIndex = (index + hobbyCards.length) % hobbyCards.length;
         const cardWidth = hobbyCards[0].getBoundingClientRect().width;
-        const gap = 16;
 
-        hobbyGrid.scrollTo({
-            left: hobbyIndex * (cardWidth + gap),
-            behavior: "smooth"
+        hobbyViewport.scrollTo({
+            left: hobbyIndex * (cardWidth + hobbyGap),
+            behavior: prefersReducedMotion ? "auto" : behavior
         });
     };
 
-    const startHobbyAutoplay = () => {
-        window.clearInterval(hobbyAutoplay);
-        hobbyAutoplay = window.setInterval(autoSlideHobbies, 3600);
-    };
+    hobbyPrevButton?.addEventListener("click", () => goToHobby(hobbyIndex - 1));
+    hobbyNextButton?.addEventListener("click", () => goToHobby(hobbyIndex + 1));
 
-    startHobbyAutoplay();
-    hobbyGrid.addEventListener("pointerenter", () => window.clearInterval(hobbyAutoplay));
-    hobbyGrid.addEventListener("pointerleave", startHobbyAutoplay);
+    hobbyViewport.addEventListener("scroll", () => {
+        const cardWidth = hobbyCards[0].getBoundingClientRect().width + hobbyGap;
+        if (!cardWidth) {
+            return;
+        }
+
+        hobbyIndex = Math.round(hobbyViewport.scrollLeft / cardWidth);
+    }, { passive: true });
+
+    if (!prefersReducedMotion) {
+        const startHobbyAutoplay = () => {
+            window.clearInterval(hobbyAutoplay);
+            hobbyAutoplay = window.setInterval(() => goToHobby(hobbyIndex + 1), 3600);
+        };
+
+        startHobbyAutoplay();
+        hobbyViewport.addEventListener("pointerenter", () => window.clearInterval(hobbyAutoplay));
+        hobbyViewport.addEventListener("pointerleave", startHobbyAutoplay);
+        hobbyPrevButton?.addEventListener("click", startHobbyAutoplay);
+        hobbyNextButton?.addEventListener("click", startHobbyAutoplay);
+    }
 }

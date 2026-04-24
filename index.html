@@ -40,14 +40,8 @@
             <div class="container hero-inner">
                 <div class="hero-copy">
                     <div class="hero-profile">
-                        <button class="profile-ring profile-trigger" type="button" aria-label="Open profile photo">
+                        <div class="profile-ring">
                             <img src="images/dp.png" alt="Portrait of Robert Mwatua">
-                        </button>
-                        <div class="profile-preview" id="profile-preview" aria-hidden="true">
-                            <button class="profile-preview-close" type="button" aria-label="Close profile preview">&times;</button>
-                            <div class="profile-preview-image">
-                                <img src="images/dp.png" alt="Larger portrait of Robert Mwatua">
-                            </div>
                         </div>
                     </div>
                     <p class="eyebrow">Cybersecurity ● Software Engineering ● Networking</p>
@@ -369,25 +363,38 @@
                     <h2>Beyond The Screen</h2>
                     <p>A few moments that keep me inspired, curious, and balanced outside technical work.</p>
                 </div>
-                <div class="hobby-grid">
-                    <article class="hobby-card hobby-card-large">
-                        <img src="images/hobby1.png" alt="Hobby photo 1">
-                    </article>
-                    <article class="hobby-card">
-                        <img src="images/hobby2.png" alt="Hobby photo 2">
-                    </article>
-                    <article class="hobby-card">
-                        <img src="images/hobby3.png" alt="Hobby photo 3">
-                    </article>
-                    <article class="hobby-card">
-                        <img src="images/hobby4.png" alt="Hobby photo 4">
-                    </article>
-                    <article class="hobby-card hobby-card-wide">
-                        <img src="images/hobby5.png" alt="Hobby photo 5">
-                    </article>
-                    <article class="hobby-card">
-                        <img src="images/hobby6.png" alt="Hobby photo 6">
-                    </article>
+                <div class="hobby-carousel">
+                    <button class="carousel-button hobby-button hobby-button-prev" type="button" aria-label="Show previous hobby photo">
+                        <span aria-hidden="true">&#8592;</span>
+                    </button>
+                    <div class="hobby-viewport">
+                        <div class="hobby-grid">
+                            <article class="hobby-card">
+                                <img src="images/hobby1.png" alt="Hobby photo 1">
+                            </article>
+                            <article class="hobby-card">
+                                <img src="images/hobby2.png" alt="Hobby photo 2">
+                            </article>
+                            <article class="hobby-card">
+                                <img src="images/hobby3.png" alt="Hobby photo 3">
+                            </article>
+                            <article class="hobby-card">
+                                <img src="images/hobby4.png" alt="Hobby photo 4">
+                            </article>
+                            <article class="hobby-card">
+                                <img src="images/hobby5.png" alt="Hobby photo 5">
+                            </article>
+                            <article class="hobby-card">
+                                <img src="images/hobby6.png" alt="Hobby photo 6">
+                            </article>
+                        </div>
+                    </div>
+                    <button class="carousel-button hobby-button hobby-button-next" type="button" aria-label="Show next hobby photo">
+                        <span aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="hobby-hint">
+                    <span>Scroll or use arrows to see more</span>
                 </div>
             </div>
         </section>
