@@ -7,14 +7,10 @@ const backToTopButton = document.querySelector(".back-to-top");
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", (event) => {
         const target = document.querySelector(anchor.getAttribute("href"));
-        if (!target) {
-            return;
-        }
+        if (!target) return;
 
         event.preventDefault();
-        target.scrollIntoView({
-            behavior: prefersReducedMotion ? "auto" : "smooth"
-        });
+        target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
 
         if (window.innerWidth <= 720 && document.body.classList.contains("nav-open")) {
             document.body.classList.remove("nav-open");
@@ -28,13 +24,9 @@ const sections = document.querySelectorAll("section");
 
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-        }
+        if (entry.isIntersecting) entry.target.classList.add("show");
     });
-}, {
-    threshold: 0.14
-});
+}, { threshold: 0.14 });
 
 sections.forEach((section) => {
     section.classList.add("hidden");
@@ -53,16 +45,11 @@ revealCards.forEach((card, index) => {
 
 const revealCardObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-            return;
-        }
-
+        if (!entry.isIntersecting) return;
         entry.target.classList.add("is-visible");
         observer.unobserve(entry.target);
     });
-}, {
-    threshold: 0.18
-});
+}, { threshold: 0.18 });
 
 revealCards.forEach((card) => revealCardObserver.observe(card));
 
@@ -71,18 +58,12 @@ const navLinks = document.querySelectorAll('nav a[href^="#"]');
 
 const navObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-            return;
-        }
-
+        if (!entry.isIntersecting) return;
         navLinks.forEach((link) => {
-            const isActive = link.getAttribute("href") === `#${entry.target.id}`;
-            link.classList.toggle("active", isActive);
+            link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
         });
     });
-}, {
-    threshold: 0.55
-});
+}, { threshold: 0.55 });
 
 sections.forEach((section) => navObserver.observe(section));
 
@@ -112,10 +93,7 @@ updateScrollProgress();
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 
 const updateBackToTop = () => {
-    if (!backToTopButton) {
-        return;
-    }
-
+    if (!backToTopButton) return;
     backToTopButton.classList.toggle("show-button", window.scrollY > 520);
 };
 
@@ -123,19 +101,56 @@ updateBackToTop();
 window.addEventListener("scroll", updateBackToTop, { passive: true });
 
 backToTopButton?.addEventListener("click", () => {
-    window.scrollTo({
-        top: 0,
-        behavior: prefersReducedMotion ? "auto" : "smooth"
-    });
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
 });
 
-// Track pointer position for a subtle ambient glow.
-if (!prefersReducedMotion) {
-    window.addEventListener("pointermove", (event) => {
-        document.body.style.setProperty("--pointer-x", `${event.clientX}px`);
-        document.body.style.setProperty("--pointer-y", `${event.clientY}px`);
+// ---- Recon console: kinetic typing sequence (signature hero element) ----
+const terminalEl = document.getElementById("terminal-output");
+
+const terminalLines = [
+    { text: "$ whois robert_mwatua.dev", cls: "" },
+    { text: "  role       : Cybersecurity Student, CIT — MMU Kenya", cls: "dim" },
+    { text: "  based_in   : Nairobi, Kenya", cls: "dim" },
+    { text: "$ scan --focus web,network --depth=deep", cls: "" },
+    { text: "  [ok] recon complete — 15+ hands-on labs logged", cls: "ok" },
+    { text: "  [ok] 5+ security projects shipped", cls: "ok" },
+    { text: "  [warn] curiosity level: still rising", cls: "warn" },
+    { text: "$ status", cls: "" },
+    { text: "  OPEN_TO_COLLAB : true", cls: "ok" },
+];
+
+const typeTerminal = async () => {
+    if (!terminalEl) return;
+
+    if (prefersReducedMotion) {
+        terminalEl.textContent = terminalLines.map((l) => l.text).join("\n");
+        return;
+    }
+
+    for (const line of terminalLines) {
+        const lineEl = document.createElement("span");
+        if (line.cls) lineEl.className = line.cls;
+        terminalEl.appendChild(lineEl);
+
+        for (const char of line.text) {
+            lineEl.textContent += char;
+            await new Promise((resolve) => setTimeout(resolve, 12));
+        }
+
+        terminalEl.appendChild(document.createTextNode("\n"));
+        await new Promise((resolve) => setTimeout(resolve, 220));
+    }
+};
+
+const terminalObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        typeTerminal();
+        observer.disconnect();
     });
-}
+}, { threshold: 0.4 });
+
+if (terminalEl) terminalObserver.observe(document.querySelector(".console"));
 
 // Count up spotlight metrics once they appear.
 const metricValues = document.querySelectorAll(".metric-value");
@@ -155,10 +170,7 @@ const animateValue = (element) => {
         const progress = Math.min((currentTime - startTime) / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
         element.textContent = `${Math.round(target * eased)}+`;
-
-        if (progress < 1) {
-            requestAnimationFrame(tick);
-        }
+        if (progress < 1) requestAnimationFrame(tick);
     };
 
     requestAnimationFrame(tick);
@@ -166,16 +178,11 @@ const animateValue = (element) => {
 
 const metricObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-            return;
-        }
-
+        if (!entry.isIntersecting) return;
         animateValue(entry.target);
         observer.unobserve(entry.target);
     });
-}, {
-    threshold: 0.5
-});
+}, { threshold: 0.5 });
 
 metricValues.forEach((metric) => metricObserver.observe(metric));
 
@@ -192,9 +199,7 @@ if (carouselTrack && carouselViewport && carouselSlides.length) {
     let certificateAutoplay;
 
     const syncDots = (index) => {
-        carouselDots.forEach((dot, dotIndex) => {
-            dot.classList.toggle("active", dotIndex === index);
-        });
+        carouselDots.forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === index));
     };
 
     const updateCarousel = (index, behavior = "smooth", preservePagePosition = false) => {
@@ -203,45 +208,23 @@ if (carouselTrack && carouselViewport && carouselSlides.length) {
 
         if (window.innerWidth <= 720) {
             const slideWidth = carouselViewport.clientWidth;
-            carouselViewport.scrollTo({
-                left: slideWidth * currentSlide,
-                behavior: prefersReducedMotion ? "auto" : behavior
-            });
+            carouselViewport.scrollTo({ left: slideWidth * currentSlide, behavior: prefersReducedMotion ? "auto" : behavior });
         } else {
             carouselTrack.style.transform = `translateX(calc(${currentSlide * -100}% - ${currentSlide}rem))`;
         }
 
         syncDots(currentSlide);
-
-        if (preservePagePosition) {
-            window.scrollTo({ top: pageTop, behavior: "auto" });
-        }
+        if (preservePagePosition) window.scrollTo({ top: pageTop, behavior: "auto" });
     };
 
-    prevButton?.addEventListener("click", () => {
-        const nextIndex = (currentSlide - 1 + carouselSlides.length) % carouselSlides.length;
-        updateCarousel(nextIndex);
-    });
-
-    nextButton?.addEventListener("click", () => {
-        const nextIndex = (currentSlide + 1) % carouselSlides.length;
-        updateCarousel(nextIndex);
-    });
-
-    carouselDots.forEach((dot, index) => {
-        dot.addEventListener("click", () => updateCarousel(index));
-    });
+    prevButton?.addEventListener("click", () => updateCarousel((currentSlide - 1 + carouselSlides.length) % carouselSlides.length));
+    nextButton?.addEventListener("click", () => updateCarousel((currentSlide + 1) % carouselSlides.length));
+    carouselDots.forEach((dot, index) => dot.addEventListener("click", () => updateCarousel(index)));
 
     carouselViewport.addEventListener("scroll", () => {
-        if (window.innerWidth > 720) {
-            return;
-        }
-
+        if (window.innerWidth > 720) return;
         const slideWidth = carouselViewport.clientWidth;
-        if (!slideWidth) {
-            return;
-        }
-
+        if (!slideWidth) return;
         const index = Math.round(carouselViewport.scrollLeft / slideWidth);
         syncDots(index);
         currentSlide = index;
@@ -250,24 +233,17 @@ if (carouselTrack && carouselViewport && carouselSlides.length) {
     window.addEventListener("resize", () => updateCarousel(currentSlide, "auto", true));
     syncDots(0);
 
-    if (window.innerWidth > 720) {
-        updateCarousel(0, "auto", true);
-    } else {
-        carouselViewport.scrollLeft = 0;
-    }
+    if (window.innerWidth > 720) updateCarousel(0, "auto", true);
+    else carouselViewport.scrollLeft = 0;
 
     if (!prefersReducedMotion) {
         const startAutoplay = () => {
             window.clearInterval(certificateAutoplay);
             certificateAutoplay = window.setInterval(() => {
-                const nextIndex = (currentSlide + 1) % carouselSlides.length;
-                updateCarousel(nextIndex, "smooth", false);
+                updateCarousel((currentSlide + 1) % carouselSlides.length, "smooth", false);
             }, 4200);
         };
-
-        const stopAutoplay = () => {
-            window.clearInterval(certificateAutoplay);
-        };
+        const stopAutoplay = () => window.clearInterval(certificateAutoplay);
 
         startAutoplay();
         carouselViewport.addEventListener("pointerenter", stopAutoplay);
@@ -293,11 +269,7 @@ if (hobbyGrid && hobbyViewport && hobbyCards.length > 1) {
     const goToHobby = (index, behavior = "smooth") => {
         hobbyIndex = (index + hobbyCards.length) % hobbyCards.length;
         const cardWidth = hobbyCards[0].getBoundingClientRect().width;
-
-        hobbyViewport.scrollTo({
-            left: hobbyIndex * (cardWidth + hobbyGap),
-            behavior: prefersReducedMotion ? "auto" : behavior
-        });
+        hobbyViewport.scrollTo({ left: hobbyIndex * (cardWidth + hobbyGap), behavior: prefersReducedMotion ? "auto" : behavior });
     };
 
     hobbyPrevButton?.addEventListener("click", () => goToHobby(hobbyIndex - 1));
@@ -305,10 +277,7 @@ if (hobbyGrid && hobbyViewport && hobbyCards.length > 1) {
 
     hobbyViewport.addEventListener("scroll", () => {
         const cardWidth = hobbyCards[0].getBoundingClientRect().width + hobbyGap;
-        if (!cardWidth) {
-            return;
-        }
-
+        if (!cardWidth) return;
         hobbyIndex = Math.round(hobbyViewport.scrollLeft / cardWidth);
     }, { passive: true });
 
